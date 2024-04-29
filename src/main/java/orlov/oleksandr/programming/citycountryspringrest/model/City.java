@@ -7,8 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
+import orlov.oleksandr.programming.citycountryspringrest.model.validators.annotaions.PastWithMin;
 
-import java.util.Date;
+import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,15 +39,15 @@ public class City {
     @DecimalMin(value = "0.0", message = "City`s area cannot be less then 0.0")
     private Double cityArea;
 
-    @Past(message = "The founded year must be in the past")
-    private Date foundedAt;
+    @PastWithMin(message = "The founded year must be in the past and can't be less then 10000 BCE")
+    private Year foundedAt;
 
     @ElementCollection
     @NotEmpty(message = "City has to have at least one language of speaking")
     private List<String> languages;
 
     @Builder
-    public City(Long id, String cityName, Country country, Integer cityPopulation, Double cityArea, Date foundedAt,
+    public City(Long id, String cityName, Country country, Integer cityPopulation, Double cityArea, Year foundedAt,
                 List<String> languages) {
         this.id = id;
         this.cityName = cityName;
