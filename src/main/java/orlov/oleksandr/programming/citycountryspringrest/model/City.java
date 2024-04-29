@@ -1,13 +1,14 @@
 package orlov.oleksandr.programming.citycountryspringrest.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.Year;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,23 +22,31 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "City name cannot be empty")
     private String cityName;
 
     @ManyToOne
     @JoinColumn(name = "country_id")
+    @NotNull(message = "City`s country cannot be null")
     private Country country;
 
-    private int cityPopulation;
+    @NotNull(message = "City`s population cannot be null")
+    @Min(value = 0, message = "City`s population cannot be less then 0")
+    private Integer cityPopulation;
 
-    private double cityArea;
+    @NotNull(message = "City`s area cannot be null")
+    @DecimalMin(value = "0.0", message = "City`s area cannot be less then 0.0")
+    private Double cityArea;
 
-    private Year foundedAt;
+    @Past(message = "The founded year must be in the past")
+    private Date foundedAt;
 
     @ElementCollection
+    @NotEmpty(message = "City has to have at least one language of speaking")
     private List<String> languages;
 
     @Builder
-    public City(Long id, String cityName, Country country, int cityPopulation, double cityArea, Year foundedAt,
+    public City(Long id, String cityName, Country country, Integer cityPopulation, Double cityArea, Date foundedAt,
                 List<String> languages) {
         this.id = id;
         this.cityName = cityName;

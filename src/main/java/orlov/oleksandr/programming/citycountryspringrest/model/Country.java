@@ -1,6 +1,10 @@
 package orlov.oleksandr.programming.citycountryspringrest.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,17 +24,22 @@ public class Country {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Country`s name cannot be empty")
+    @Column(unique = true)
     private String countryName;
 
-    private double countryArea;
+    @NotNull(message = "Country`s area cannot be null")
+    @DecimalMin(value = "0.0", message = "Country`s area cannot be less then 0.0")
+    private Double countryArea;
 
+    @NotEmpty(message = "Country`s currency cannot be empty")
     private String currency;
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     private List<City> cities;
 
     @Builder
-    public Country(Long id, String countryName, double countryArea, String currency, List<City> cities) {
+    public Country(Long id, String countryName, Double countryArea, String currency, List<City> cities) {
         this.id = id;
         this.countryName = countryName;
         this.countryArea = countryArea;
