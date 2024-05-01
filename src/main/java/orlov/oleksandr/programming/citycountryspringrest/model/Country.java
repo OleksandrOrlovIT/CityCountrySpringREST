@@ -1,5 +1,6 @@
 package orlov.oleksandr.programming.citycountryspringrest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,6 +35,7 @@ public class Country {
     @NotEmpty(message = "Country`s currency cannot be empty")
     private String currency;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
     private List<City> cities;
 

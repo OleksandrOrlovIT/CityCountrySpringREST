@@ -31,10 +31,14 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country create(Country country) {
-        Objects.requireNonNull(country, "Country must not be null");
+        checkCountryAndNameForNull(country);
 
         if (country.getId() != null) {
             throw new IllegalArgumentException("Country id must be null");
+        }
+
+        if (existsByName(country.getCountryName())) {
+            throw new IllegalArgumentException("Country with name= " + country.getCountryName() + " already exists");
         }
 
         return countryRepository.save(country);
@@ -42,14 +46,29 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public Country update(Country country) {
-        Objects.requireNonNull(country, "Country must not be null");
-        Objects.requireNonNull(country.getId(), "Country's id must not be null");
+        checkCountryAndNameForNull(country);
+
+        Country foundCountry = findById(country.getId());
+
+        if(!foundCountry.getCountryName().equals(country.getCountryName()) && existsByName(country.getCountryName())){
+            throw new IllegalArgumentException("Country with name= " + country.getCountryName() + " already exists");
+        }
 
         return countryRepository.save(country);
     }
 
     @Override
-    public void delete(Country country) {
-        countryRepository.delete(country);
+    public void deleteById(Long id) {
+        countryRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByName(String countryName) {
+        return countryRepository.existsByCountryName(countryName);
+    }
+
+    private void checkCountryAndNameForNull(Country country) {
+        Objects.requireNonNull(country, "Country must not be null");
+        Objects.requireNonNull(country.getCountryName(), "Country name must not be null");
     }
 }
