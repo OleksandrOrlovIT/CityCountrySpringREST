@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.proxy.HibernateProxy;
 import orlov.oleksandr.programming.citycountryspringrest.model.validators.annotaions.PastWithMin;
 
 import java.time.Year;
@@ -59,19 +58,29 @@ public class City {
     }
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+
         City city = (City) o;
-        return getId() != null && Objects.equals(getId(), city.getId());
+        return Objects.equals(id, city.id)
+                && Objects.equals(cityName, city.cityName)
+                && Objects.equals(country, city.country)
+                && Objects.equals(cityPopulation, city.cityPopulation)
+                && Objects.equals(cityArea, city.cityArea) && Objects.equals(foundedAt, city.foundedAt)
+                && Objects.equals(languages, city.languages);
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(cityName);
+        result = 31 * result + Objects.hashCode(country);
+        result = 31 * result + Objects.hashCode(cityPopulation);
+        result = 31 * result + Objects.hashCode(cityArea);
+        result = 31 * result + Objects.hashCode(foundedAt);
+        result = 31 * result + Objects.hashCode(languages);
+        return result;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package orlov.oleksandr.programming.citycountryspringrest.controller.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import orlov.oleksandr.programming.citycountryspringrest.json.deserializer.YearDeserializer;
 import orlov.oleksandr.programming.citycountryspringrest.model.validators.annotaions.PastWithMin;
 
 import java.time.Year;
@@ -31,6 +33,7 @@ public class CityDTO {
     @DecimalMin(value = "0.0", message = "City`s area cannot be less then 0.0")
     private Double cityArea;
 
+    @JsonDeserialize(using = YearDeserializer.class)
     @PastWithMin(message = "The founded year must be in the past and can't be less then 10000 BCE")
     private Year foundedAt;
 
@@ -39,5 +42,17 @@ public class CityDTO {
 
     public List<String> getLanguagesList() {
         return Arrays.asList(languages.split(",\\s*"));
+    }
+
+    @Override
+    public String toString() {
+        return "CityDTO{" +
+                "cityName='" + cityName + '\'' +
+                ", countryId=" + countryId +
+                ", cityPopulation=" + cityPopulation +
+                ", cityArea=" + cityArea +
+                ", foundedAt=" + foundedAt +
+                ", languages='" + languages + '\'' +
+                '}';
     }
 }

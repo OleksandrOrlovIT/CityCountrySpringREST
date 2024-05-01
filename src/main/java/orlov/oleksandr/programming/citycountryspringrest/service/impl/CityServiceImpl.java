@@ -37,6 +37,10 @@ public class CityServiceImpl implements CityService {
             throw new IllegalArgumentException("City id must be null");
         }
 
+        if(existsByAllFieldsExceptId(city)){
+            throw new IllegalArgumentException("City already exists");
+        }
+
         return cityRepository.save(city);
     }
 
@@ -45,11 +49,37 @@ public class CityServiceImpl implements CityService {
         Objects.requireNonNull(city, "Country must not be null");
         Objects.requireNonNull(city.getId(), "Country's id must not be null");
 
+        if(existsByAllFieldsExceptId(city)){
+            throw new IllegalArgumentException("City already exists");
+        }
+
         return cityRepository.save(city);
     }
 
     @Override
     public void deleteById(Long id) {
         cityRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsByAllFieldsExceptId(City city) {
+        List<City> cities = cityRepository.findByCityName(city.getCityName());
+
+        for(City item : cities) {
+            if(allFieldsEqualsExceptForId(city, item)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean allFieldsEqualsExceptForId(City city1, City city2){
+        return  Objects.equals(city1.getCityName(), city2.getCityName())
+                && Objects.equals(city1.getCountry(), city2.getCountry())
+                && Objects.equals(city1.getCityPopulation(), city2.getCityPopulation())
+                && Objects.equals(city1.getCityArea(), city2.getCityArea())
+                && Objects.equals(city1.getFoundedAt(), city2.getFoundedAt())
+                && Objects.equals(city1.getLanguages(), city2.getLanguages());
     }
 }
