@@ -8,20 +8,20 @@ It uses Docker Compose to start postgres db before starting application and Liqu
 <h3>Main endpoints</h3>
 <h4>Country endpoints</h4>
 <p>
-  GET /api/country - returns all countries from db.
-  POST /api/country (valid body for country) - creates new Country;
-  PUT /api/country/{id} (valid body for country) - updates Country;
-  DELETE /api/country/{id} - deletes Country;
+  GET /api/country - returns all countries from db.<br/>
+  POST /api/country (valid body for country) - creates new Country;<br/>
+  PUT /api/country/{id} (valid body for country) - updates Country;<br/>
+  DELETE /api/country/{id} - deletes Country;<br/>
 </p>
 <h4>City endpoints</h4>
 <p>
-  POST /api/city (valid body for city) - creates new City.
-  GET /api/city/{id} - Returns City by id.
-  PUT /api/entity1/{id} (valid body for city) - updates City.
-  DELETE /api/city/{id} - deletes City.
-  POST /api/city/_list for example{“countryId”: 2,…, “page”: 1,“size”: 20} (page and size always has to be inside body)- returns page with all found by filtering objects and totalPages number. (Filters are passed inside body)
-  POST /api/city/_report {“entity2Id”: 2, …} - returns a csv file of all found cities matching filtering in body.
-  POST /api/city/upload - uploads file of jsons and returns how many were errors and how many were saved objects.
+  POST /api/city (valid body for city) - creates new City.<br/>
+  GET /api/city/{id} - Returns City by id.<br/>
+  PUT /api/entity1/{id} (valid body for city) - updates City.<br/>
+  DELETE /api/city/{id} - deletes City.<br/>
+  POST /api/city/_list for example{“countryId”: 2,…, “page”: 1,“size”: 20} (page and size always has to be inside body)- returns page with all found by filtering objects and totalPages number. (Filters are passed inside body)<br/>
+  POST /api/city/_report {“entity2Id”: 2, …} - returns a csv file of all found cities matching filtering in body.<br/>
+  POST /api/city/upload - uploads file of jsons and returns how many were errors and how many were saved objects.<br/>
 
 </p>
 <h3>Main working directories</h3>
