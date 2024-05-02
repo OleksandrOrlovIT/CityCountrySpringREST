@@ -1,6 +1,8 @@
 package orlov.oleksandr.programming.citycountryspringrest.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
@@ -21,8 +23,8 @@ public class CountryController {
     }
 
     @PostMapping
-    public Country createCountry(@RequestBody @Validated Country country) {
-        return countryService.create(country);
+    public ResponseEntity<Country> createCountry(@RequestBody @Validated Country country) {
+        return new ResponseEntity<>(countryService.create(country), HttpStatus.CREATED);
     }
 
     @PutMapping("/{countryId}")

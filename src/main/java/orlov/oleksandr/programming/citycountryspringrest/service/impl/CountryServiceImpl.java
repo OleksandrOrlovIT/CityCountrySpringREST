@@ -38,7 +38,7 @@ public class CountryServiceImpl implements CountryService {
         }
 
         if (existsByName(country.getCountryName())) {
-            throw new IllegalArgumentException("Country with name= " + country.getCountryName() + " already exists");
+            throw new IllegalArgumentException("Country with name = " + country.getCountryName() + " already exists");
         }
 
         return countryRepository.save(country);
