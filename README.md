@@ -2,26 +2,69 @@
 <h2>Project Description</h2>
 <h3>Summary</h3>
 <p>This is a REST application that works with country and city entities. It provides CRUD methods and some additional methods for city to upload json file or to get Pages or CSV using HTTP.
-It uses Docker Compose to start postgres db before starting application and Liquibase to create schema. In resources OneHundredCities.json provided to upload cities using POST /api/entity1/upload </p>
+It uses Docker Compose to start postgres db before starting application and Liquibase to create schema. In resources OneHundredCities.json provided to upload cities using POST. /api/entity1/upload<br/>
+After running application at http://localhost:8080/swagger-ui/index.html#/ you can find swagger info about application
+</p>
 <h3>Tech Stack</h3>
-<p>Java 17, lombok, jackson-core, jackson-dataformat-xml, junit-jupiter, mockito-core, liquibase, spring-boot-starter-web, postgresql, spring-boot-docker-compose</p>
+<p>Java 17, lombok, jackson-core, jackson-dataformat-xml, junit-jupiter, mockito-core, liquibase, spring-boot-starter-web, postgresql, spring-boot-docker-compose, swagger</p>
 <h3>Main endpoints</h3>
 <h4>Country endpoints</h4>
 <p>
-  GET /api/country - returns all countries from db.<br/>
-  POST /api/country (valid body for country) - creates new Country;<br/>
-  PUT /api/country/{id} (valid body for country) - updates Country;<br/>
-  DELETE /api/country/{id} - deletes Country;<br/>
+  <h5>GET /api/country - returns all countries from db.<h5><br/>
+
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/dc405c92-66ed-45cf-ba9d-39f9cc008d85)
+
+  <h5>POST /api/country (valid body for country) - creates new Country;</h5><br/>
+
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/fe54cd9b-bc4e-4deb-8ee2-c67271f81e7e)
+
+![Screenshot from 2024-05-02 22-59-33](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/936a28b4-8a49-4784-bd31-3f6e7331523b)
+
+  <h5>PUT /api/country/{id} (valid body for country) - updates Country;</h5><br/>
+
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/8e1d3a7b-4ed7-4d1f-a96e-b00ef84419b9)
+  
+  <h5>DELETE /api/country/{id} - deletes Country;</h5><br/>
+  
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/e637166a-dd73-44f7-a65d-ba5ceacfe68d)
 </p>
 <h4>City endpoints</h4>
 <p>
-  POST /api/city (valid body for city) - creates new City.<br/>
-  GET /api/city/{id} - Returns City by id.<br/>
-  PUT /api/entity1/{id} (valid body for city) - updates City.<br/>
-  DELETE /api/city/{id} - deletes City.<br/>
-  POST /api/city/_list for example{“countryId”: 2,…, “page”: 1,“size”: 20} (page and size always has to be inside body)- returns page with all found by filtering objects and totalPages number. (Filters are passed inside body)<br/>
-  POST /api/city/_report {“entity2Id”: 2, …} - returns a csv file of all found cities matching filtering in body.<br/>
-  POST /api/city/upload - uploads file of jsons and returns how many were errors and how many were saved objects.<br/>
+  <b>I will upload 100 jsons in order to test all other endpoints</b>
+  <h5>POST /api/city/upload - uploads file of jsons and returns how many were errors and how many were saved objects.</h5><br/>
+  
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/cc48976a-3b5f-45aa-88b2-79df78d5e124)
+
+  <h5>POST /api/city (valid body for city) - creates new City.</h5><br/>
+  
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/76b54a4d-9d13-4f7d-939f-56ae3a3e18c7)
+
+  <h5>GET /api/city/{id} - Returns City by id.</h5><br/>
+  
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/6f03401f-c98c-4a70-928e-af4766af5618)
+
+  
+  <h5>PUT /api/entity1/{id} (valid body for city) - updates City.</h5><br/>
+  
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/f30665cf-9188-4a49-a0ff-79aff77751ce)
+
+  <h5>DELETE /api/city/{id} - deletes City.</h5><br/>
+
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/74f9df22-9676-4728-b1c6-60dda43650cc)
+  
+  <h5>POST /api/city/_list for example{“countryId”: 2,…, “page”: 1,“size”: 20} (page and size always has to be inside body)- returns page with all found by filtering objects and totalPages number. (Filters are passed inside body)</h5><br/>
+  
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/1ab98bba-ec3a-45d4-9e59-7c990f1c8e89)
+
+![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/5c680ff2-b78c-4a07-ad35-12c1bc42633b)
+
+  <h5>POST /api/city/_report {“entity2Id”: 2, …} - returns a csv file of all found cities matching filtering in body.</h5><br/>
+
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/25823da6-9b5c-47cd-b50d-f2c8b131f5f7)
+
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/0a2d55bc-e37f-4988-97c0-96d6b6082ba4)
+
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/95a6ac46-0125-49e9-adc4-897a58e82d05)
 
 </p>
 <h3>Main working directories</h3>
