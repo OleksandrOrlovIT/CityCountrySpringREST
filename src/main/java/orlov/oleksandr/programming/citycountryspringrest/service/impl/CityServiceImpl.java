@@ -54,6 +54,8 @@ public class CityServiceImpl implements CityService {
         Objects.requireNonNull(city, "Country must not be null");
         Objects.requireNonNull(city.getId(), "Country's id must not be null");
 
+        findById(city.getId());
+
         if(existsByAllFieldsExceptId(city)){
             throw new IllegalArgumentException("City already exists");
         }

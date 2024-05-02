@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.CityMapper;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityCRUDResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
 import orlov.oleksandr.programming.citycountryspringrest.csv.CsvGeneratorUtil;
@@ -26,6 +27,8 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 
 import java.io.IOException;
 import java.util.*;
+
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @AllArgsConstructor
 @RestController
@@ -39,27 +42,27 @@ public class CityController {
     private CsvGeneratorUtil csvGeneratorUtil;
 
     @PostMapping
-    public ResponseEntity<CityResponse> createCity(@RequestBody @Validated CityDTO cityDTO) {
+    public ResponseEntity<CityCRUDResponse> createCity(@RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
 
         City city = cityMapper.toCity(cityDTO, country);
 
         city = cityService.create(city);
 
-        CityResponse cityResponse  = cityMapper.toCityResponse(city);
+        CityCRUDResponse crudResponse = cityMapper.toCityCRUDResponse(city);
 
-        return new ResponseEntity<>(cityResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(crudResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/{cityId}")
-    public CityResponse getCity(@PathVariable Long cityId) {
+    public CityCRUDResponse getCity(@PathVariable Long cityId) {
         City city = cityService.findById(cityId);
 
-        return cityMapper.toCityResponse(city);
+        return cityMapper.toCityCRUDResponse(city);
     }
 
     @PutMapping("/{cityId}")
-    public CityResponse updateCity(@PathVariable Long cityId, @RequestBody @Validated CityDTO cityDTO) {
+    public CityCRUDResponse updateCity(@PathVariable Long cityId, @RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
 
         City city = cityMapper.toCity(cityDTO, country);
@@ -67,26 +70,12 @@ public class CityController {
 
         city = cityService.update(city);
 
-        return cityMapper.toCityResponse(city);
+        return cityMapper.toCityCRUDResponse(city);
     }
 
     @DeleteMapping("/{cityId}")
     public void deleteCity(@PathVariable Long cityId) {
         cityService.deleteById(cityId);
-    }
-
-    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> uploadFile(@RequestPart MultipartFile file) throws IOException {
-        int[] response = jsonParser.saveCitiesFromInputStream(file);
-
-        Map<String, Integer> jsonResponseMap = new HashMap<>();
-        jsonResponseMap.put("totalSaved", response[1]);
-        jsonResponseMap.put("totalErrors", response[0] - response[1]);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(jsonResponseMap);
-
-        return ResponseEntity.ok().body(jsonResponse);
     }
 
     @PostMapping("/_list")
@@ -125,6 +114,20 @@ public class CityController {
         byte[] csvBytes = csvGeneratorUtil.generateCityCsv(cities).getBytes();
 
         return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> uploadFile(@RequestPart MultipartFile file) throws IOException {
+        int[] response = jsonParser.saveCitiesFromInputStream(file);
+
+        Map<String, Integer> jsonResponseMap = new HashMap<>();
+        jsonResponseMap.put("totalSaved", response[1]);
+        jsonResponseMap.put("totalErrors", response[0] - response[1]);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(jsonResponseMap);
+
+        return ResponseEntity.ok().body(jsonResponse);
     }
 
     private FilterProvider getFilterProvider(Map<String, String> input) {

@@ -1,7 +1,0 @@
-[
-  { "cityName": "Kyiv", "countryId": 1, "cityPopulation": 2884000, "cityArea": 839, "foundedAt": "482", "languages": "Ukrainian, English"},
-  { "cityName": "Kharkiv", "countryId": 1, "cityPopulation": 1431000, "cityArea": 350, "foundedAt": "1654", "languages": "Ukrainian, English"},
-  { "cityName": "Odesa", "countryId": 1, "cityPopulation": 1015000, "cityArea": 236, "foundedAt": "1794", "languages": "Ukrainian, English"},
-  { "cityName": "Dnipro", "countryId": 1, "cityPopulation": 1000000, "cityArea": 405, "foundedAt": "1776", "languages": "Ukrainian, English"},
-  { "cityName": "Lviv", "countryId": 1, "cityPopulation": 723000, "cityArea": 182, "foundedAt": "1256", "languages": "Ukrainian, English"}
-]

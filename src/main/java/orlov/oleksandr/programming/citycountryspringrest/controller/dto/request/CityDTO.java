@@ -12,7 +12,9 @@ import orlov.oleksandr.programming.citycountryspringrest.json.deserializer.YearD
 import orlov.oleksandr.programming.citycountryspringrest.model.validators.annotaions.PastWithMin;
 
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Setter
@@ -41,7 +43,11 @@ public class CityDTO {
     private String languages;
 
     public List<String> getLanguagesList() {
-        return Arrays.asList(languages.split(",\\s*"));
+        if (languages == null || languages.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return new ArrayList<>(Arrays.asList(languages.split(",\\s*")));
+        }
     }
 
     @Override
