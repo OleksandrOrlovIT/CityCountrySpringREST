@@ -1,4 +1,4 @@
-package orlov.oleksandr.programming.citycountryspringrest.controller.dto;
+package orlov.oleksandr.programming.citycountryspringrest.controller.dto.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.DecimalMin;

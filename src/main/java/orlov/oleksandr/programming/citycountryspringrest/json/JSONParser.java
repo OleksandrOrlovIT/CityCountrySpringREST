@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import orlov.oleksandr.programming.citycountryspringrest.controller.dto.CityDTO;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.CityMapper;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;

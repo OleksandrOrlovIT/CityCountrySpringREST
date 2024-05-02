@@ -2,12 +2,17 @@ package orlov.oleksandr.programming.citycountryspringrest.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CityRepository;
 import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.CityService;
+import orlov.oleksandr.programming.citycountryspringrest.service.specifications.CitySpecifications;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -81,5 +86,19 @@ public class CityServiceImpl implements CityService {
                 && Objects.equals(city1.getCityArea(), city2.getCityArea())
                 && Objects.equals(city1.getFoundedAt(), city2.getFoundedAt())
                 && Objects.equals(city1.getLanguages(), city2.getLanguages());
+    }
+
+    @Override
+    public Page<City> findPageCitiesByFilters(Map<String, Object> filterParams, Pageable pageable) {
+        Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
+
+        return cityRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    public List<City> findCitiesByFilters(Map<String, Object> filterParams) {
+        Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
+
+        return cityRepository.findAll(spec);
     }
 }

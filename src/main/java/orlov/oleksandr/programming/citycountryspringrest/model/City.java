@@ -1,5 +1,6 @@
 package orlov.oleksandr.programming.citycountryspringrest.model;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Builder;

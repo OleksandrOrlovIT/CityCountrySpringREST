@@ -1,14 +1,23 @@
 package orlov.oleksandr.programming.citycountryspringrest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.*;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import orlov.oleksandr.programming.citycountryspringrest.controller.dto.CityDTO;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.CityMapper;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
+import orlov.oleksandr.programming.citycountryspringrest.csv.CsvGeneratorUtil;
 import orlov.oleksandr.programming.citycountryspringrest.json.JSONParser;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
@@ -16,6 +25,7 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.City
 import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.CountryService;
 
 import java.io.IOException;
+import java.util.*;
 
 @AllArgsConstructor
 @RestController
@@ -26,6 +36,7 @@ public class CityController {
     private CountryService countryService;
     private CityMapper cityMapper;
     private JSONParser jsonParser;
+    private CsvGeneratorUtil csvGeneratorUtil;
 
     @PostMapping
     public ResponseEntity<City> createCity(@RequestBody @Validated CityDTO cityDTO) {
@@ -37,8 +48,10 @@ public class CityController {
     }
 
     @GetMapping("/{cityId}")
-    public City getCity(@PathVariable Long cityId) {
-        return cityService.findById(cityId);
+    public CityResponse getCity(@PathVariable Long cityId) {
+        City city = cityService.findById(cityId);
+
+        return cityMapper.toCityResponse(city);
     }
 
     @PutMapping("/{cityId}")
@@ -56,11 +69,67 @@ public class CityController {
         cityService.deleteById(cityId);
     }
 
-    @PostMapping(value ="/upload", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadFile(@RequestPart MultipartFile file) throws IOException {
         int[] response = jsonParser.saveCitiesFromInputStream(file);
-        String jsonResponse = String.format("{\n\"totalPassed\": %d,\n\"totalSaved\": %d\n}", response[0], response[1]);
+
+        Map<String, Integer> jsonResponseMap = new HashMap<>();
+        jsonResponseMap.put("totalSaved", response[1]);
+        jsonResponseMap.put("totalErrors", response[0] - response[1]);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(jsonResponseMap);
 
         return ResponseEntity.ok().body(jsonResponse);
+    }
+
+    @PostMapping("/_list")
+    public MappingJacksonValue getList(@RequestBody Map<String, Object> input) {
+        int page = (Integer) input.get("page");
+        int size = (Integer) input.get("size");
+
+        input.remove("page");
+        input.remove("size");
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<City> cityPage = cityService.findPageCitiesByFilters(input, pageable);
+
+        List<CityFilteredResponse> responseList = cityMapper.toCityFilteredResponseList(cityPage.getContent());
+
+        Map<String, Object> response = new LinkedHashMap<>();
+        response.put("list", responseList);
+        response.put("totalPages", cityPage.getTotalPages());
+
+        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(response);
+        FilterProvider filterProvider = getFilterProvider(input);
+        mappingJacksonValue.setFilters(filterProvider);
+
+        return mappingJacksonValue;
+    }
+
+    @PostMapping("/_report")
+    public ResponseEntity<byte[]> generateCsvFile(@RequestBody Map<String, Object> input) {
+        List<City> cities = cityService.findCitiesByFilters(input);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "report.csv");
+
+        byte[] csvBytes = csvGeneratorUtil.generateCityCsv(cities).getBytes();
+
+        return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
+    }
+
+    private FilterProvider getFilterProvider(Map<String, Object> input) {
+        Set<String> fieldSet = new HashSet<>();
+        fieldSet.add("id");
+        fieldSet.add("cityName");
+        fieldSet.addAll(input.keySet());
+
+        SimpleBeanPropertyFilter filter = new SimpleBeanPropertyFilter.FilterExceptFilter(fieldSet);
+
+        return new SimpleFilterProvider()
+                .addFilter("cityFilter", filter);
     }
 }
