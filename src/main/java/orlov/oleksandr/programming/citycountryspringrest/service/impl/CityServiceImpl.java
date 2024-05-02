@@ -6,20 +6,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.CityMapper;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CityRepository;
 import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.CityService;
 import orlov.oleksandr.programming.citycountryspringrest.service.specifications.CitySpecifications;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
+    private final CityMapper cityMapper;
 
     @Override
     public List<City> findAll() {
@@ -68,35 +68,29 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public boolean existsByAllFieldsExceptId(City city) {
-        List<City> cities = cityRepository.findByCityName(city.getCityName());
+        Map<String, String> filterParams = new HashMap<>();
 
-        for(City item : cities) {
-            if(allFieldsEqualsExceptForId(city, item)){
-                return true;
-            }
-        }
+        filterParams.put("cityName", city.getCityName());
+        filterParams.put("countryId", city.getCountry().getId().toString());
+        filterParams.put("cityPopulation", city.getCityPopulation().toString());
+        filterParams.put("cityArea", city.getCityArea().toString());
+        filterParams.put("foundedAt", city.getFoundedAt().toString());
+        filterParams.put("languages", cityMapper.convertListLanguages(city.getLanguages()));
 
-        return false;
-    }
+        Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
 
-    private boolean allFieldsEqualsExceptForId(City city1, City city2){
-        return  Objects.equals(city1.getCityName(), city2.getCityName())
-                && Objects.equals(city1.getCountry(), city2.getCountry())
-                && Objects.equals(city1.getCityPopulation(), city2.getCityPopulation())
-                && Objects.equals(city1.getCityArea(), city2.getCityArea())
-                && Objects.equals(city1.getFoundedAt(), city2.getFoundedAt())
-                && Objects.equals(city1.getLanguages(), city2.getLanguages());
+        return !cityRepository.findAll(spec).isEmpty();
     }
 
     @Override
-    public Page<City> findPageCitiesByFilters(Map<String, Object> filterParams, Pageable pageable) {
+    public Page<City> findPageCitiesByFilters(Map<String, String> filterParams, Pageable pageable) {
         Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
 
         return cityRepository.findAll(spec, pageable);
     }
 
     @Override
-    public List<City> findCitiesByFilters(Map<String, Object> filterParams) {
+    public List<City> findCitiesByFilters(Map<String, String> filterParams) {
         Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
 
         return cityRepository.findAll(spec);

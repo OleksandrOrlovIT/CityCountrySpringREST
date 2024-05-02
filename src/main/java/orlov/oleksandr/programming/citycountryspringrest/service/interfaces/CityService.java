@@ -9,6 +9,6 @@ import java.util.Map;
 
 public interface CityService extends CrudService<City, Long>{
     boolean existsByAllFieldsExceptId(City city);
-    Page<City> findPageCitiesByFilters(Map<String, Object> filterParams, Pageable pageable);
-    List<City> findCitiesByFilters(Map<String, Object> filterParams);
+    Page<City> findPageCitiesByFilters(Map<String, String> filterParams, Pageable pageable);
+    List<City> findCitiesByFilters(Map<String, String> filterParams);
 }

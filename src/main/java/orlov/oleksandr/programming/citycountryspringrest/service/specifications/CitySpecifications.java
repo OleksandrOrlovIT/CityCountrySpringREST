@@ -7,14 +7,11 @@ import org.springframework.data.jpa.domain.Specification;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CitySpecifications {
 
-    public static Specification<City> cityIdEquals(Integer cityId) {
+    public static Specification<City> cityIdEquals(Long cityId) {
         return (root, query, cb) -> cb.equal(root.get("id"), cityId);
     }
 
@@ -22,7 +19,7 @@ public class CitySpecifications {
         return (root, query, cb) -> cb.equal(root.get("cityName"), cityName);
     }
 
-    public static Specification<City> countryIdEquals(Integer countryId) {
+    public static Specification<City> countryIdEquals(Long countryId) {
         return (root, query, cb) -> cb.equal(root.get("country").get("id"), countryId);
     }
 
@@ -58,11 +55,11 @@ public class CitySpecifications {
         };
     }
 
-    public static Specification<City> buildSpecifications(Map<String, Object> filterParams) {
+    public static Specification<City> buildSpecifications(Map<String, String> filterParams) {
         Specification<City> spec = Specification.where(null);
 
         if (filterParams.containsKey("id")) {
-            Integer cityId = (Integer) filterParams.get("id");
+            Long cityId = Long.valueOf(filterParams.get("id"));
             spec = spec.and(cityIdEquals(cityId));
         }
 
@@ -72,17 +69,17 @@ public class CitySpecifications {
         }
 
         if (filterParams.containsKey("countryId")) {
-            Integer countryId = (Integer) filterParams.get("countryId");
+            Long countryId = Long.valueOf(filterParams.get("countryId"));
             spec = spec.and(countryIdEquals(countryId));
         }
 
         if (filterParams.containsKey("cityPopulation")) {
-            Integer cityPopulation = (Integer) filterParams.get("cityPopulation");
+            Integer cityPopulation = Integer.parseInt(filterParams.get("cityPopulation"));
             spec = spec.and(cityPopulationEquals(cityPopulation));
         }
 
         if (filterParams.containsKey("cityArea")) {
-            Double cityArea = (Double) filterParams.get("cityArea");
+            Double cityArea = Double.parseDouble(filterParams.get("cityArea"));
             spec = spec.and(cityAreaEquals(cityArea));
         }
 
@@ -92,7 +89,7 @@ public class CitySpecifications {
         }
 
         if(filterParams.containsKey("languages")){
-            List<String> languages = Arrays.asList(filterParams.get("languages").toString().split(",\\s*"));
+            List<String> languages = Arrays.asList(filterParams.get("languages").split(",\\s*"));
             spec = spec.and(languagesEquals(languages));
         }
 

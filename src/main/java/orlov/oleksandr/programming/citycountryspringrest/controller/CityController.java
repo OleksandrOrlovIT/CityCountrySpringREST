@@ -39,12 +39,16 @@ public class CityController {
     private CsvGeneratorUtil csvGeneratorUtil;
 
     @PostMapping
-    public ResponseEntity<City> createCity(@RequestBody @Validated CityDTO cityDTO) {
+    public ResponseEntity<CityResponse> createCity(@RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
 
         City city = cityMapper.toCity(cityDTO, country);
 
-        return new ResponseEntity<>(cityService.create(city), HttpStatus.CREATED);
+        city = cityService.create(city);
+
+        CityResponse cityResponse  = cityMapper.toCityResponse(city);
+
+        return new ResponseEntity<>(cityResponse, HttpStatus.CREATED);
     }
 
     @GetMapping("/{cityId}")
@@ -55,13 +59,15 @@ public class CityController {
     }
 
     @PutMapping("/{cityId}")
-    public City updateCity(@PathVariable Long cityId, @RequestBody @Validated CityDTO cityDTO) {
+    public CityResponse updateCity(@PathVariable Long cityId, @RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
 
         City city = cityMapper.toCity(cityDTO, country);
         city.setId(cityId);
 
-        return cityService.update(city);
+        city = cityService.update(city);
+
+        return cityMapper.toCityResponse(city);
     }
 
     @DeleteMapping("/{cityId}")
@@ -84,9 +90,9 @@ public class CityController {
     }
 
     @PostMapping("/_list")
-    public MappingJacksonValue getList(@RequestBody Map<String, Object> input) {
-        int page = (Integer) input.get("page");
-        int size = (Integer) input.get("size");
+    public MappingJacksonValue getList(@RequestBody Map<String, String> input) {
+        int page = Integer.parseInt(input.get("page"));
+        int size = Integer.parseInt(input.get("size"));
 
         input.remove("page");
         input.remove("size");
@@ -109,7 +115,7 @@ public class CityController {
     }
 
     @PostMapping("/_report")
-    public ResponseEntity<byte[]> generateCsvFile(@RequestBody Map<String, Object> input) {
+    public ResponseEntity<byte[]> generateCsvFile(@RequestBody Map<String, String> input) {
         List<City> cities = cityService.findCitiesByFilters(input);
 
         HttpHeaders headers = new HttpHeaders();
@@ -121,7 +127,7 @@ public class CityController {
         return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
     }
 
-    private FilterProvider getFilterProvider(Map<String, Object> input) {
+    private FilterProvider getFilterProvider(Map<String, String> input) {
         Set<String> fieldSet = new HashSet<>();
         fieldSet.add("id");
         fieldSet.add("cityName");
