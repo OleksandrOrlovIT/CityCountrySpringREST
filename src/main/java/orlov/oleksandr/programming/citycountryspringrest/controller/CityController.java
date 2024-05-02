@@ -17,8 +17,7 @@ import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.CityMapper;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityCRUDResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
-import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
-import orlov.oleksandr.programming.citycountryspringrest.csv.CsvGeneratorUtil;
+import orlov.oleksandr.programming.citycountryspringrest.csv.CSVGeneratorUtil;
 import orlov.oleksandr.programming.citycountryspringrest.json.JSONParser;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
@@ -27,8 +26,6 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 
 import java.io.IOException;
 import java.util.*;
-
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @AllArgsConstructor
 @RestController
@@ -39,7 +36,7 @@ public class CityController {
     private CountryService countryService;
     private CityMapper cityMapper;
     private JSONParser jsonParser;
-    private CsvGeneratorUtil csvGeneratorUtil;
+    private CSVGeneratorUtil csvGeneratorUtil;
 
     @PostMapping
     public ResponseEntity<CityCRUDResponse> createCity(@RequestBody @Validated CityDTO cityDTO) {

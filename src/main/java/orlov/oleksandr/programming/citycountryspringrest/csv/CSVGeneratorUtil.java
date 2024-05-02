@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class CsvGeneratorUtil {
+public class CSVGeneratorUtil {
 
     private static final String CSV_HEADER = "id,cityName,countryId,cityPopulation,cityArea,foundedAt,languages\n";
 
