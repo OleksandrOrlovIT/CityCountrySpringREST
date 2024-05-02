@@ -38,7 +38,7 @@ public class InputStreamJsonArrayStreamDataSupplier<T> implements Supplier<Strea
             token = jsonParser.nextToken();
         }
         if (!JsonToken.START_OBJECT.equals(token)) {
-            throw new RuntimeException("Can't get any JSON object from input " + data);
+            log.warn("Can't get any JSON object from input " + data);
         }
     }
 

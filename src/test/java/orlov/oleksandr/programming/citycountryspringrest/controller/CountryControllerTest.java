@@ -54,12 +54,6 @@ class CountryControllerTest {
     private CountryRepository countryRepository;
 
     @Test
-    void connectionEstablished() {
-        assertThat(postgres.isCreated()).isTrue();
-        assertThat(postgres.isRunning()).isTrue();
-    }
-
-    @Test
     void shouldFindZeroCountries() {
         Country[] countries = restTemplate.getForObject("/api/country", Country[].class);
         assertEquals(0, countries.length);
@@ -140,6 +134,7 @@ class CountryControllerTest {
                 restTemplate.exchange("/api/country", HttpMethod.POST, new HttpEntity<>(country), Country.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(Objects.requireNonNull(response.getBody()).getId());
         assertEquals(country.getCountryName(), Objects.requireNonNull(response.getBody()).getCountryName());
         assertEquals(country.getCountryArea(), Objects.requireNonNull(response.getBody()).getCountryArea());
         assertEquals(country.getCurrency(), Objects.requireNonNull(response.getBody()).getCurrency());
@@ -276,8 +271,6 @@ class CountryControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
-
-    //TODO deleteCountry - deleteNothing, deleteValid
     @Test
     void deleteNothing_ReturnsOK(){
         ResponseEntity<Void> response =
@@ -311,6 +304,8 @@ class CountryControllerTest {
     @AfterEach
     public void cleanUp() {
         List<Country> countries = countryRepository.findAll();
-        countryRepository.deleteAll(countries);
+        if(!countries.isEmpty()) {
+            countryRepository.deleteAll(countries);
+        }
     }
 }

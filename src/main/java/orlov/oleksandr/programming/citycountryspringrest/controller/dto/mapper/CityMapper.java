@@ -2,6 +2,7 @@ package orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper;
 
 import org.springframework.stereotype.Component;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
+import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityCRUDResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
@@ -60,6 +61,19 @@ public class CityMapper {
         cityResponse.setCityArea(city.getCityArea());
         cityResponse.setFoundedAt(city.getFoundedAt());
         cityResponse.setLanguages(convertListLanguagesForCSV(city.getLanguages()));
+
+        return cityResponse;
+    }
+
+    public CityCRUDResponse toCityCRUDResponse(City city){
+        CityCRUDResponse cityResponse = new CityCRUDResponse();
+        cityResponse.setId(city.getId());
+        cityResponse.setCityName(city.getCityName());
+        cityResponse.setCountry(city.getCountry());
+        cityResponse.setCityPopulation(city.getCityPopulation());
+        cityResponse.setCityArea(city.getCityArea());
+        cityResponse.setFoundedAt(city.getFoundedAt());
+        cityResponse.setLanguages(convertListLanguages(city.getLanguages()));
 
         return cityResponse;
     }
