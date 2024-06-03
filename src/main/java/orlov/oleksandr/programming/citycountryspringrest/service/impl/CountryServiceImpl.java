@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CountryRepository;
 import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.CountryService;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,6 +16,7 @@ import java.util.Objects;
 public class CountryServiceImpl implements CountryService {
 
     private final CountryRepository countryRepository;
+    private final MessageSender messageSender;
 
     @Override
     public List<Country> findAll() {
@@ -41,7 +43,13 @@ public class CountryServiceImpl implements CountryService {
             throw new IllegalArgumentException("Country with name = " + country.getCountryName() + " already exists");
         }
 
-        return countryRepository.save(country);
+        Country savedCountry = countryRepository.save(country);
+
+        if(savedCountry.getId() != null){
+            messageSender.sendMessageWithEmail("Successfully created country.", savedCountry.toString());
+        }
+
+        return savedCountry;
     }
 
     @Override

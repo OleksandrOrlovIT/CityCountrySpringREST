@@ -1,5 +1,6 @@
 package orlov.oleksandr.programming.citycountryspringrest.service.impl;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import orlov.oleksandr.programming.citycountryspringrest.controller.dto.mapper.C
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CityRepository;
 import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.CityService;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
 import orlov.oleksandr.programming.citycountryspringrest.service.specifications.CitySpecifications;
 
 import java.util.*;
@@ -20,6 +22,7 @@ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final CityMapper cityMapper;
+    private final MessageSender messageSender;
 
     @Override
     public List<City> findAll() {
@@ -46,7 +49,13 @@ public class CityServiceImpl implements CityService {
             throw new IllegalArgumentException("City already exists");
         }
 
-        return cityRepository.save(city);
+        City savedCity = cityRepository.save(city);
+
+        if(savedCity.getId() != null){
+            messageSender.sendMessageWithEmail("Successfully created city.", savedCity.toString());
+        }
+
+        return savedCity;
     }
 
     @Override

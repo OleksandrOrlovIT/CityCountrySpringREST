@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.*;
@@ -25,6 +26,7 @@ import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CityRepository;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -50,6 +52,9 @@ class CityControllerTest {
 
     @Autowired
     private CityRepository cityRepository;
+
+    @MockBean
+    MessageSender messageSender;
 
     @Test
     void shouldGetBadRequest_forCreatingWithAllInvalidFields() {

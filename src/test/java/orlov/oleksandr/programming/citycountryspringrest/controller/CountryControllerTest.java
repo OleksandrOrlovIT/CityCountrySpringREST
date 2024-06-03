@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.*;
@@ -14,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CountryDTO;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CountryRepository;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +37,9 @@ class CountryControllerTest {
 
     @Autowired
     private CountryRepository countryRepository;
+
+    @MockBean
+    MessageSender messageSender;
 
     @Test
     void shouldFindZeroCountries() {
