@@ -27,6 +27,7 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 import java.io.IOException;
 import java.util.*;
 
+@CrossOrigin("http://localhost:3000/")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/city")

@@ -12,6 +12,7 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 
 import java.util.List;
 
+@CrossOrigin("http://localhost:3000/")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/country")
