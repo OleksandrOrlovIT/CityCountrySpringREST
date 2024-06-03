@@ -1,5 +1,7 @@
 <h1>OleksandrOrlovIT ProfitSoft JavaCore</h1>
 <h2>Project Description</h2>
+<h3>Recent Changes</h3>
+<p>In order to add RabbitMQ implemenetation there was created an .env file. Change it to your real email to send this email in message via RabbitMQ.</p>
 <h3>Summary</h3>
 <p>This is a REST application that works with country and city entities. It provides CRUD methods and some additional methods for city to upload json file or to get Pages or CSV using HTTP.
 It uses Docker Compose to start postgres db before starting application and Liquibase to create schema. In resources OneHundredCities.json provided to upload cities using POST. /api/entity1/upload<br/>
