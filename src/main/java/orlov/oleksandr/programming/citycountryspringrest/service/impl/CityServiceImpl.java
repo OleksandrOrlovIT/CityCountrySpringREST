@@ -1,6 +1,5 @@
 package orlov.oleksandr.programming.citycountryspringrest.service.impl;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -23,15 +23,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityCRUDResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
-import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityResponse;
 import orlov.oleksandr.programming.citycountryspringrest.model.City;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CityRepository;
-import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.impl.RabbitMQMessageSender;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Year;
 import java.util.*;
@@ -54,7 +52,7 @@ class CityControllerTest {
     private CityRepository cityRepository;
 
     @MockBean
-    MessageSender messageSender;
+    RabbitMQMessageSender messageSender;
 
     @Test
     void shouldGetBadRequest_forCreatingWithAllInvalidFields() {

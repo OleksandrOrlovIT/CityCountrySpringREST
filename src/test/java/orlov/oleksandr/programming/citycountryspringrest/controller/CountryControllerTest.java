@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CountryDTO;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CountryRepository;
-import orlov.oleksandr.programming.citycountryspringrest.service.messages.MessageSender;
+import orlov.oleksandr.programming.citycountryspringrest.service.messages.impl.RabbitMQMessageSender;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +39,7 @@ class CountryControllerTest {
     private CountryRepository countryRepository;
 
     @MockBean
-    MessageSender messageSender;
+    RabbitMQMessageSender rabbitMQMessageSender;
 
     @Test
     void shouldFindZeroCountries() {
