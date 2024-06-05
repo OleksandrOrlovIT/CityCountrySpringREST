@@ -17,9 +17,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import orlov.oleksandr.programming.citycountryspringrest.configuration.EnvConfig;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CityDTO;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityCRUDResponse;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.response.CityFilteredResponse;
@@ -43,7 +45,8 @@ class CityControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.0");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.0")
+            .withNetwork(Network.SHARED);
 
     @Autowired
     TestRestTemplate restTemplate;
@@ -53,6 +56,9 @@ class CityControllerTest {
 
     @MockBean
     RabbitMQMessageSender messageSender;
+
+    @MockBean
+    EnvConfig envConfig;
 
     @Test
     void shouldGetBadRequest_forCreatingWithAllInvalidFields() {

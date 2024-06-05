@@ -9,9 +9,11 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import orlov.oleksandr.programming.citycountryspringrest.configuration.EnvConfig;
 import orlov.oleksandr.programming.citycountryspringrest.controller.dto.request.CountryDTO;
 import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 import orlov.oleksandr.programming.citycountryspringrest.repository.CountryRepository;
@@ -30,7 +32,8 @@ class CountryControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.0");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16.0")
+            .withNetwork(Network.SHARED);
 
     @Autowired
     TestRestTemplate restTemplate;
@@ -40,6 +43,9 @@ class CountryControllerTest {
 
     @MockBean
     RabbitMQMessageSender rabbitMQMessageSender;
+
+    @MockBean
+    EnvConfig envConfig;
 
     @Test
     void shouldFindZeroCountries() {
