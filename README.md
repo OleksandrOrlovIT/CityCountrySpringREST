@@ -2,10 +2,26 @@
 <h2>Project Description</h2>
 <h3>Recent Changes</h3>
 <p>In order to add RabbitMQ implemenetation there was created an .env file. Change it to your real email to send this email in message via RabbitMQ.</p>
+<h2>Preparation to start app</h2>
+<p>To make application work with rabbitMQ you need to start another application available by next link <a href="https://github.com/OleksandrOrlovIT/CityCountryEmailSender">https://github.com/OleksandrOrlovIT/CityCountryEmailSender</a></p>
+<br/>
+<p>
+  To configure this app please proceed to the next steps -> <br/> 
+  1. Clone application 
+  
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/0b6c79d9-c598-4ed3-acc7-9afc423b5125)
+  
+  2. Input email address where you want to receive emails
+
+     ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/eb008ca2-8f73-4866-a7bc-04bb27209555)
+  3. Inside project root run <b>docker-compose up --build</b>
+  ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/7ea5ac8e-d000-4fa2-a8f0-a9a311286682)
+  4. Wait for  Started CityCountrySpringRestApplication in 6.75 seconds message in the logs for full build. At <a href="http://localhost:8080/swagger-ui/index.html#/">http://localhost:8080/swagger-ui/index.html#/</a> you can use app, create country and create city (post methods) will send messages to message broker.
+</p>
 <h3>Summary</h3>
 <p>This is a REST application that works with country and city entities. It provides CRUD methods and some additional methods for city to upload json file or to get Pages or CSV using HTTP.
 It uses Docker Compose to start postgres db before starting application and Liquibase to create schema. In resources OneHundredCities.json provided to upload cities using POST. /api/entity1/upload<br/>
-After running application at http://localhost:8080/swagger-ui/index.html#/ you can find swagger info about application
+After running application at <a href="http://localhost:8080/swagger-ui/index.html#/">http://localhost:8080/swagger-ui/index.html#/</a> you can find swagger info about application
 </p>
 <h3>Tech Stack</h3>
 <p>Java 17, lombok, jackson-core, jackson-dataformat-xml, junit-jupiter, mockito-core, liquibase, spring-boot-starter-web, postgresql, spring-boot-docker-compose, swagger</p>
