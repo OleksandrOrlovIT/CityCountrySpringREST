@@ -11,7 +11,7 @@
   
   ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/0b6c79d9-c598-4ed3-acc7-9afc423b5125)
   
-  2. Input email address where you want to receive emails
+  2. Input email address where you want to receive emails in root of the project in .env file.
 
      ![image](https://github.com/OleksandrOrlovIT/CityCountrySpringREST/assets/86959421/eb008ca2-8f73-4866-a7bc-04bb27209555)
   3. Inside project root run <b>docker-compose up --build</b>
