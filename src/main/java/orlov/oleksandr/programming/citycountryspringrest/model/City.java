@@ -1,6 +1,5 @@
 package orlov.oleksandr.programming.citycountryspringrest.model;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
@@ -13,6 +12,9 @@ import java.time.Year;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * City entity. Used in database.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

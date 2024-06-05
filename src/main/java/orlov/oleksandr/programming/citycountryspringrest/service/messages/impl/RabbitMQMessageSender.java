@@ -10,6 +10,9 @@ import orlov.oleksandr.programming.citycountryspringrest.service.messages.Messag
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Implementation class for MessageSender using RabbitMQ
+ */
 @AllArgsConstructor
 @Service
 public class RabbitMQMessageSender implements MessageSender {
@@ -17,6 +20,12 @@ public class RabbitMQMessageSender implements MessageSender {
     private final RabbitTemplate rabbitTemplate;
     private final Dotenv dotenv;
 
+
+    /**
+     * Send message with email address, json and subject
+     * @param message
+     * @param json
+     */
     public void sendMessageWithEmail(String message, String json){
         try {
             Map<String, String> messageContent = new HashMap<>();

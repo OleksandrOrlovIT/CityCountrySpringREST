@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.time.Year;
 
+/**
+ * DTO class for representing City data in a standard response.
+ */
 @Setter
 @Getter
 public class CityResponse {

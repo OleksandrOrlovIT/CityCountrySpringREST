@@ -6,15 +6,31 @@ import orlov.oleksandr.programming.citycountryspringrest.model.validators.annota
 
 import java.time.Year;
 
+
+/**
+ * Validator for PastWithMin annotation.
+ */
 public class PastWithMinValidator implements ConstraintValidator<PastWithMin, Year> {
 
     private int minBceYear;
 
+    /**
+     * Initializes the validator with the specified minimum BCE year.
+     *
+     * @param constraintAnnotation The annotation instance
+     */
     @Override
     public void initialize(PastWithMin constraintAnnotation) {
         this.minBceYear = constraintAnnotation.minBceYear();
     }
 
+    /**
+     * Validates if the given Year is in the past and not before the minimum BCE year.
+     *
+     * @param value   The Year to validate
+     * @param context The validation context
+     * @return true if the Year is valid, false otherwise
+     */
     @Override
     public boolean isValid(Year value, ConstraintValidatorContext context) {
         if (value == null) {

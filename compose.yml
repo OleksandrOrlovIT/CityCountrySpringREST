@@ -1,40 +1,59 @@
+# Docker Compose file version
 version: '3.8'
 
+# Definition of external network
 networks:
   citycountryemailsender_city-country-net:
     external: true
 
+# Configuration for PostgreSQL service
 services:
   postgres:
+    # PostgreSQL Docker image version
     image: 'postgres:16.0'
+    # Restart policy for the container
     restart: always
+    # Environment variables for PostgreSQL configuration
     environment:
       - POSTGRES_DB=city_country_postgres
       - POSTGRES_USER=city_country_user
       - POSTGRES_PASSWORD=mysecretpassword
+    # Port mapping from host to container
     ports:
       - '5436:5432'
+    # Mounting SQL scripts for database initialization
     volumes:
       - ./src/main/resources/db/changelog/changes/schema.sql:/docker-entrypoint-initdb.d/schema.sql
       - ./src/main/resources/db/changelog/changes/populateCountries.sql:/docker-entrypoint-initdb.d/populateCountries.sql
+    # Linking the service to the external network
     networks:
       - citycountryemailsender_city-country-net
+    # Limiting memory usage for the container
     mem_limit: 1g
 
+  # Configuration for Spring Boot application
   spring-boot-app:
+    # Container name
     container_name: city_country_spring_boot
+    # Building Docker image using Dockerfile
     build:
       context: .
       dockerfile: Dockerfile
+    # Port mapping from host to container
     ports:
       - '8080:8080'
+    # Environment file containing environment variables
     env_file:
       - .env
+    # Dependency definition, ensures PostgreSQL container is started before this container
     depends_on:
       - postgres
+    # Environment variables for Spring Boot application
     environment:
       - SERVER_PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/city_country_postgres
+    # Linking the service to the external network
     networks:
       - citycountryemailsender_city-country-net
+    # Limiting memory usage for the container
     mem_limit: 1g

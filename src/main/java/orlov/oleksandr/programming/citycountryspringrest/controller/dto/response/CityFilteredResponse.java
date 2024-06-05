@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.time.Year;
 
+/**
+ * DTO class for representing City data in a filtered response.
+ */
 @Setter
 @Getter
 @JsonFilter("cityFilter")

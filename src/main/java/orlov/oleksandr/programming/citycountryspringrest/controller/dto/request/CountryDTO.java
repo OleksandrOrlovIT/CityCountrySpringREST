@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * DTO class for representing Country data.
+ */
 @Setter
 @Getter
 public class CountryDTO {

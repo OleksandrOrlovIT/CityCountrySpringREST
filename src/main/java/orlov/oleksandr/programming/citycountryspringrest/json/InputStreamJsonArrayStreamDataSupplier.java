@@ -16,6 +16,11 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * Supplier for providing a stream of objects from a JSON array in an input stream.
+ *
+ * @param <T> Type of objects in the stream
+ */
 @Slf4j
 public class InputStreamJsonArrayStreamDataSupplier<T> implements Supplier<Stream<T>> {
 
@@ -24,6 +29,13 @@ public class InputStreamJsonArrayStreamDataSupplier<T> implements Supplier<Strea
     private Class<T> type;
     private InputStream data;
 
+    /**
+     * Constructs an InputStreamJsonArrayStreamDataSupplier.
+     *
+     * @param type Type of objects in the stream
+     * @param data Input stream containing JSON array
+     * @throws IOException if an I/O error occurs
+     */
     public InputStreamJsonArrayStreamDataSupplier(Class<T> type, InputStream data) throws IOException {
         this.type = type;
         this.data = data;
@@ -42,6 +54,11 @@ public class InputStreamJsonArrayStreamDataSupplier<T> implements Supplier<Strea
         }
     }
 
+    /**
+     * Provides a stream of objects parsed from the JSON array in the input stream.
+     *
+     * @return Stream of objects
+     */
     @Override
     public Stream<T> get() {
         return StreamSupport.stream(

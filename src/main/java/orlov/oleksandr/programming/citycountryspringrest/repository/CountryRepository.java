@@ -6,6 +6,9 @@ import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 
 import java.util.Optional;
 
+/**
+ * JpaRepository Interface to manage Countries
+ */
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long> {
     boolean existsByCountryName(String name);

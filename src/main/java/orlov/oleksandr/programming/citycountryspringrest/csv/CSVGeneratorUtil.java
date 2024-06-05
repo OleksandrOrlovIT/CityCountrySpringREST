@@ -8,6 +8,9 @@ import orlov.oleksandr.programming.citycountryspringrest.model.City;
 
 import java.util.List;
 
+/**
+ * A class to generate a csv file
+ */
 @Component
 @AllArgsConstructor
 public class CSVGeneratorUtil {
@@ -16,6 +19,12 @@ public class CSVGeneratorUtil {
 
     private final CityMapper cityMapper;
 
+
+    /**
+     * A method to create a csv file from List of cities
+     * @param cityList
+     * @return
+     */
     public String generateCityCsv(List<City> cityList) {
         List<CityResponse> cityResponses = cityMapper.toCityResponseListFormatCSV(cityList);
 

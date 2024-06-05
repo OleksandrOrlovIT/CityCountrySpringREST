@@ -27,6 +27,10 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Controller class that used to work with cities
+ */
+
 @CrossOrigin("http://localhost:3000/")
 @AllArgsConstructor
 @RestController
@@ -39,6 +43,11 @@ public class CityController {
     private JSONParser jsonParser;
     private CSVGeneratorUtil csvGeneratorUtil;
 
+    /**
+     * Takes cityDto and tries to save this city
+     * @param cityDTO
+     * @return ResponseEntity<CityCRUDResponse>
+     */
     @PostMapping
     public ResponseEntity<CityCRUDResponse> createCity(@RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
@@ -52,6 +61,11 @@ public class CityController {
         return new ResponseEntity<>(crudResponse, HttpStatus.CREATED);
     }
 
+    /**
+     * Endpoint to get city by id
+     * @param cityId
+     * @return CityCRUDResponse
+     */
     @GetMapping("/{cityId}")
     public CityCRUDResponse getCity(@PathVariable Long cityId) {
         City city = cityService.findById(cityId);
@@ -59,6 +73,13 @@ public class CityController {
         return cityMapper.toCityCRUDResponse(city);
     }
 
+
+    /**
+     * Endpoint to update city
+     * @param cityId
+     * @param cityDTO
+     * @return CityCRUDResponse
+     */
     @PutMapping("/{cityId}")
     public CityCRUDResponse updateCity(@PathVariable Long cityId, @RequestBody @Validated CityDTO cityDTO) {
         Country country = countryService.findById(cityDTO.getCountryId());
@@ -71,11 +92,20 @@ public class CityController {
         return cityMapper.toCityCRUDResponse(city);
     }
 
+    /**
+     * Endpoint to delete city by id
+     * @param cityId
+     */
     @DeleteMapping("/{cityId}")
     public void deleteCity(@PathVariable Long cityId) {
         cityService.deleteById(cityId);
     }
 
+    /**
+     * Endpoint to get list of city entities with desired page and size
+     * @param input
+     * @return MappingJacksonValue
+     */
     @PostMapping("/_list")
     public MappingJacksonValue getList(@RequestBody Map<String, String> input) {
         int page = Integer.parseInt(input.get("page"));
@@ -101,6 +131,11 @@ public class CityController {
         return mappingJacksonValue;
     }
 
+    /**
+     * Endpoint to retrieve a csv file of city entities
+     * @param input
+     * @return ResponseEntity<byte[]>
+     */
     @PostMapping("/_report")
     public ResponseEntity<byte[]> generateCsvFile(@RequestBody Map<String, String> input) {
         List<City> cities = cityService.findCitiesByFilters(input);
@@ -114,6 +149,12 @@ public class CityController {
         return new ResponseEntity<>(csvBytes, headers, HttpStatus.OK);
     }
 
+    /**
+     * Endpoint to upload a json file with city entities
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> uploadFile(@RequestPart MultipartFile file) throws IOException {
         int[] response = jsonParser.saveCitiesFromInputStream(file);
@@ -128,6 +169,11 @@ public class CityController {
         return ResponseEntity.ok().body(jsonResponse);
     }
 
+    /**
+     * Method to getFilters using input map
+     * @param input
+     * @return
+     */
     private FilterProvider getFilterProvider(Map<String, String> input) {
         Set<String> fieldSet = new HashSet<>();
         fieldSet.add("id");

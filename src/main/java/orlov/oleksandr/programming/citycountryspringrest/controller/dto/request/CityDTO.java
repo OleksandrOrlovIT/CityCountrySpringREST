@@ -14,9 +14,11 @@ import orlov.oleksandr.programming.citycountryspringrest.model.validators.annota
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+/**
+ * DTO class for representing City data.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

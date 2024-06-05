@@ -14,6 +14,9 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Parses JSON data containing city information and saves it to the database.
+ */
 @AllArgsConstructor
 @Component
 @Slf4j
@@ -23,6 +26,12 @@ public class JSONParser {
     private CountryService countryService;
     private CityMapper cityMapper;
 
+    /**
+     * Creates a data supplier for reading city data from an input stream.
+     *
+     * @param file JSON file containing city data
+     * @return InputStreamJsonArrayStreamDataSupplier instance
+     */
     private static InputStreamJsonArrayStreamDataSupplier<CityDTO> getDataSupplier(MultipartFile file) {
         try {
             InputStream inputStream = file.getInputStream();
@@ -32,6 +41,12 @@ public class JSONParser {
         }
     }
 
+    /**
+     * Reads city data from a JSON file and saves it to the database.
+     *
+     * @param file JSON file containing city data
+     * @return An array with two elements: the total number of cities processed and the number of cities saved
+     */
     public int[] saveCitiesFromInputStream(MultipartFile file) {
         var supplier = getDataSupplier(file);
         //An array with 2 elements -> First element all times, and second only saved times

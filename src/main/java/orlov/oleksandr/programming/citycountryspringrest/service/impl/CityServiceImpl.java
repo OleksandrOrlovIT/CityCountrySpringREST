@@ -15,6 +15,9 @@ import orlov.oleksandr.programming.citycountryspringrest.service.specifications.
 
 import java.util.*;
 
+/**
+ * Implementation for CityService
+ */
 @AllArgsConstructor
 @Service
 public class CityServiceImpl implements CityService {
@@ -23,11 +26,23 @@ public class CityServiceImpl implements CityService {
     private final CityMapper cityMapper;
     private final MessageSender messageSender;
 
+    /**
+     * Retrieves all cities.
+     *
+     * @return List of cities
+     */
     @Override
     public List<City> findAll() {
         return cityRepository.findAll();
     }
 
+    /**
+     * Retrieves a city by its ID.
+     *
+     * @param id The ID of the city to retrieve
+     * @return The city with the given ID
+     * @throws EntityNotFoundException if the city with the given ID is not found
+     */
     @Override
     public City findById(Long id) {
         Objects.requireNonNull(id, "City's id must not be null");
@@ -36,6 +51,13 @@ public class CityServiceImpl implements CityService {
                 .orElseThrow(() -> new EntityNotFoundException("City with id " + id + " not found"));
     }
 
+    /**
+     * Creates a new city.
+     *
+     * @param city The city to create
+     * @return The created city
+     * @throws IllegalArgumentException if the city already exists or if the city's ID is not null
+     */
     @Override
     public City create(City city) {
         Objects.requireNonNull(city, "City must not be null");
@@ -57,6 +79,13 @@ public class CityServiceImpl implements CityService {
         return savedCity;
     }
 
+    /**
+     * Updates an existing city.
+     *
+     * @param city The city to update
+     * @return The updated city
+     * @throws IllegalArgumentException if the city already exists or if the city's ID is null
+     */
     @Override
     public City update(City city) {
         Objects.requireNonNull(city, "Country must not be null");
@@ -71,11 +100,22 @@ public class CityServiceImpl implements CityService {
         return cityRepository.save(city);
     }
 
+    /**
+     * Deletes a city by its ID.
+     *
+     * @param id The ID of the city to delete
+     */
     @Override
     public void deleteById(Long id) {
         cityRepository.deleteById(id);
     }
 
+    /**
+     * Checks if a city already exists based on all fields except the ID.
+     *
+     * @param city The city to check
+     * @return true if the city already exists, false otherwise
+     */
     @Override
     public boolean existsByAllFieldsExceptId(City city) {
         Map<String, String> filterParams = new HashMap<>();
@@ -92,6 +132,13 @@ public class CityServiceImpl implements CityService {
         return !cityRepository.findAll(spec).isEmpty();
     }
 
+    /**
+     * Finds cities by applying specified filters and returns a page of results.
+     *
+     * @param filterParams The filter parameters
+     * @param pageable     The pagination information
+     * @return Page of cities
+     */
     @Override
     public Page<City> findPageCitiesByFilters(Map<String, String> filterParams, Pageable pageable) {
         Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);
@@ -99,6 +146,12 @@ public class CityServiceImpl implements CityService {
         return cityRepository.findAll(spec, pageable);
     }
 
+    /**
+     * Finds cities by applying specified filters and returns a list of results.
+     *
+     * @param filterParams The filter parameters
+     * @return List of cities
+     */
     @Override
     public List<City> findCitiesByFilters(Map<String, String> filterParams) {
         Specification<City> spec = CitySpecifications.buildSpecifications(filterParams);

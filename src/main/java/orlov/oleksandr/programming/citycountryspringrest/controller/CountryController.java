@@ -12,6 +12,9 @@ import orlov.oleksandr.programming.citycountryspringrest.service.interfaces.Coun
 
 import java.util.List;
 
+/**
+ * A controller to manage Country entities
+ */
 @CrossOrigin("http://localhost:3000/")
 @AllArgsConstructor
 @RestController
@@ -21,11 +24,20 @@ public class CountryController {
     private final CountryService countryService;
     private final CountryMapper countryMapper;
 
+    /**
+     * Endpoint to get all countries
+     * @return
+     */
     @GetMapping
     public List<Country> getAllCountries() {
         return countryService.findAll();
     }
 
+    /**
+     * An endpoint to create a country
+     * @param countryDTO
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Country> createCountry(@RequestBody @Validated CountryDTO countryDTO) {
         Country country = countryMapper.toCountry(countryDTO);
@@ -33,6 +45,13 @@ public class CountryController {
         return new ResponseEntity<>(countryService.create(country), HttpStatus.CREATED);
     }
 
+
+    /**
+     * An endpoint to update a country
+     * @param countryId
+     * @param countryDTO
+     * @return
+     */
     @PutMapping("/{countryId}")
     public Country updateCountry(@PathVariable Long countryId, @RequestBody @Validated CountryDTO countryDTO) {
         Country country = countryMapper.toCountry(countryDTO);
@@ -40,6 +59,10 @@ public class CountryController {
         return countryService.update(country);
     }
 
+    /**
+     * An endpoint to delete a country
+     * @param countryId
+     */
     @DeleteMapping("/{countryId}")
     public void deleteCountry(@PathVariable Long countryId) {
         countryService.deleteById(countryId);

@@ -14,6 +14,9 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.ElementType.METHOD;
 
+/**
+ * Custom annotation for validating that a Year is in the past and not before a specified minimum year.
+ */
 @Documented
 @Constraint(validatedBy = { })
 @Target({ METHOD, FIELD, PARAMETER })

@@ -6,6 +6,9 @@ import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 
 import java.time.Year;
 
+/**
+ * DTO class for representing City data in CRUD operations.
+ */
 @Getter
 @Setter
 public class CityCRUDResponse {

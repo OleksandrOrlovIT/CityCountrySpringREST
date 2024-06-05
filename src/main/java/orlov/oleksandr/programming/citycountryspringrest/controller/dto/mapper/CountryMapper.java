@@ -6,6 +6,13 @@ import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 
 @Component
 public class CountryMapper {
+
+    /**
+     * Maps a CountryDTO to a Country entity.
+     *
+     * @param countryDTO The CountryDTO object
+     * @return The mapped Country entity
+     */
     public Country toCountry(CountryDTO countryDTO){
         Country country = new Country();
         country.setCountryName(countryDTO.getCountryName());

@@ -14,6 +14,9 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Country entity. Used in database.
+ */
 @Setter
 @Getter
 @NoArgsConstructor

@@ -11,9 +11,19 @@ import orlov.oleksandr.programming.citycountryspringrest.model.Country;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mapper component for mapping between CityDTO and City entities.
+ */
 @Component
 public class CityMapper {
 
+    /**
+     * Maps a CityDTO to a City entity.
+     *
+     * @param cityDTO The CityDTO object
+     * @param country The Country object associated with the city
+     * @return The mapped City entity
+     */
     public City toCity(CityDTO cityDTO, Country country) {
         City city = new City();
         city.setCityName(cityDTO.getCityName());
@@ -26,6 +36,12 @@ public class CityMapper {
         return city;
     }
 
+    /**
+     * Maps City to CityFilteredResponse
+     *
+     * @param city
+     * @return CityFilteredResponse
+     */
     public CityFilteredResponse toCityFilteredResponse(City city) {
         CityFilteredResponse cityResponse = new CityFilteredResponse();
         cityResponse.setId(city.getId());
@@ -39,6 +55,12 @@ public class CityMapper {
         return cityResponse;
     }
 
+    /**
+     * Maps City to CityResponse
+     *
+     * @param city
+     * @return CityResponse
+     */
     public CityResponse toCityResponse(City city){
         CityResponse cityResponse = new CityResponse();
         cityResponse.setId(city.getId());
@@ -52,6 +74,12 @@ public class CityMapper {
         return cityResponse;
     }
 
+    /**
+     * Maps City to CityResponse in csv format
+     *
+     * @param city
+     * @return CityResponse
+     */
     public CityResponse toCityResponseCSVFormat(City city){
         CityResponse cityResponse = new CityResponse();
         cityResponse.setId(city.getId());
@@ -65,6 +93,12 @@ public class CityMapper {
         return cityResponse;
     }
 
+    /**
+     * Maps City to CityCRUDResponse
+     *
+     * @param city
+     * @return CityCRUDResponse
+     */
     public CityCRUDResponse toCityCRUDResponse(City city){
         CityCRUDResponse cityResponse = new CityCRUDResponse();
         cityResponse.setId(city.getId());
@@ -78,6 +112,12 @@ public class CityMapper {
         return cityResponse;
     }
 
+    /**
+     * Maps List of City class to List of CityFilteredResponse
+     *
+     * @param cities
+     * @return List<CityFilteredResponse>
+     */
     public List<CityFilteredResponse> toCityFilteredResponseList(List<City> cities) {
         List<CityFilteredResponse> cityFilteredResponses = new ArrayList<>();
 
@@ -88,6 +128,12 @@ public class CityMapper {
         return cityFilteredResponses;
     }
 
+    /**
+     * Maps List of City class to List of CityResponse
+     *
+     * @param cities
+     * @return List<CityResponse>
+     */
     public List<CityResponse> toCityResponseList(List<City> cities) {
         List<CityResponse> cityResponses = new ArrayList<>();
 
@@ -98,6 +144,12 @@ public class CityMapper {
         return cityResponses;
     }
 
+    /**
+     * Maps List of City class to List of CityResponse in csv format
+     *
+     * @param cities
+     * @return List<CityResponse>
+     */
     public List<CityResponse> toCityResponseListFormatCSV(List<City> cities) {
         List<CityResponse> cityResponses = new ArrayList<>();
 
@@ -108,6 +160,12 @@ public class CityMapper {
         return cityResponses;
     }
 
+    /**
+     * Convert List<String> of languages into one String
+     *
+     * @param languages
+     * @return String
+     */
     public String convertListLanguages(List<String> languages){
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < languages.size() - 1; i++){
@@ -118,6 +176,12 @@ public class CityMapper {
         return sb.toString();
     }
 
+    /**
+     * Convert List<String> of languages into one String in csv format
+     *
+     * @param languages
+     * @return String
+     */
     public String convertListLanguagesForCSV(List<String> languages){
         StringBuilder sb = new StringBuilder();
         sb.append("\"");
