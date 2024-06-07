@@ -1,4 +1,4 @@
-<h1>OleksandrOrlovIT ProfitSoft JavaCore</h1>
+<h1>OleksandrOrlovIT CityCountrySpringREST</h1>
 <h2>Project Description</h2>
 <h3>Recent Changes</h3>
 <p>In order to add RabbitMQ implemenetation there was created an .env file. Change it to your real email to send this email in message via RabbitMQ.</p>
